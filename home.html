@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parabénssss s2</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: url(arquivos/3268139703.gif) no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      color: #344d4d;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(230, 242, 240, 0.6);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .area-principal {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      width: 100%;
+      max-width: 1000px;
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(50, 80, 80, 0.2);
+      background: #f0faf7;
+      border: 1px solid #c8e6e4;
+      overflow: hidden;
+      margin-right: 320px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tv {
+      position: relative;
+      flex: 2;
+      min-width: 300px;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+      color: #2b4f4a;
+      font-size: 18px;
+      line-height: 1.4;
+      overflow-y: auto;
+      border-radius: 20px 0 0 20px;
+    }
+
+    video#video-fundo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      border-radius: 20px 0 0 20px;
+    }
+
+    video#video-fundo.active {
+      display: block;
+    }
+
+    #conteudo-texto {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .controle {
+      flex: 1;
+      min-width: 280px;
+      background: #cce7dd;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border-radius: 0 20px 20px 0;
+    }
+
+    .item-btn {
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: none;
+      background: #8fc3a7;
+      color: #1f3d36;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .item-btn:hover {
+      background-color: #a0d8b9;
+      transform: scale(1.05);
+    }
+
+    .player-webcam-wrapper {
+      position: fixed;
+      top: 40px;
+      right: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      z-index: 99;
+    }
+
+    .webcam-face {
+      width: 120px;
+      height: 120px;
+      background: #000;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #4caf50;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #webcam-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .seta-texto-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .seta {
+      width: 20px;
+      height: 20px;
+      background-color: #4caf50;
+      clip-path: polygon(50% 0%, 100% 100%, 50% 75%, 0% 100%);
+    }
+
+    .texto-seta {
+      font-size: 14px;
+      font-weight: bold;
+      color: #4caf50;
+    }
+
+    .spotify {
+      width: 280px;
+      height: 160px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .spotify iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    @media (max-width: 1000px) {
+      .area-principal {
+        margin-right: 0;
+      }
+
+      .player-webcam-wrapper {
+        position: relative;
+        margin-top: 20px;
+        align-self: center;
+      }
+
+      body {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+    }
+
+    .quiz-btn {
+      display: inline-block;
+      margin: 8px 6px 8px 0;
+      padding: 10px 16px;
+      background-color: #6ca06c;
+      color: white;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.25s ease;
+    }
+    .quiz-btn:hover {
+      background-color: #85c285;
+    }
+    
+    .receita-img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 10px;
+      margin: 10px 0;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .receita-container {
+      text-align: center;
+    }
+    
+    .receita-titulo {
+      color: #2b4f4a;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+    
+    .receita-descricao {
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    
+    .receita-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #8fc3a7;
+      color: #1f3d36;
+      text-decoration: none;
+      border-radius: 14px;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+    
+    .receita-link:hover {
+      background-color: #a0d8b9;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <main class="area-principal">
+    <section class="tv">
+      <video id="video-fundo">
+        <source src="arquivos/VID_20250616_071909_444~2.mp4" type="video/mp4" />
+        Seu navegador não suporta vídeo.
+      </video>
+      <div id="conteudo-texto"></div>
+    </section>
+
+    <nav class="controle">
+      <button class="item-btn" id="quiz-receita-btn">Quiz de Receitas</button>
+
+      <button class="item-btn" data-titulo="Mural Recadinho" data-texto="<strong>Para o meu amor...</strong><br><br>Parabéns meu amor, te amo muito (acho que já sabe disso hehe). Muito obrigado por fazer parte da minha vida e iluminar todos os meus dias, que você tenha um ótimo dia e um ano de muita saúde e alegria. Você merece o mundo, feliz aniversário! <br> te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo,te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo, te amo,te amo, te amo, te amo, te amo, te amo, te amo,te amo, te amo, te amo, te amo, te amo, te amo,te amo, te amo, te amo, te amo, te amo, te amo" data-video="false">Te amo!</button>
+
+      <button class="item-btn" data-titulo="Parabéns pra Você" data-texto="" data-video="true"> Parabéns pra Você</button>
+
+      <button class="item-btn" id="quiz-filme-btn">🎬 O que assistir?</button>
+
+      <button class="item-btn" id="desligar-tv" style="background:#b3d9c3;">🛑 Desligar TV</button>
+    </nav>
+  </main>
+
+  <div class="player-webcam-wrapper">
+    <div class="webcam-face">
+      <video id="webcam-video" autoplay muted playsinline></video>
+    </div>
+    <div class="seta-texto-wrapper">
+      <div class="seta"></div>
+      <div class="texto-seta">um gatinho</div>
+    </div>
+    <div class="spotify">
+      <iframe src="https://open.spotify.com/embed/playlist/5zxB0J22RoM3VHZDgeWYJM?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <script>
+    async function startWebcam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        document.getElementById('webcam-video').srcObject = stream;
+      } catch (e) {
+        console.warn('Erro ao acessar webcam:', e);
+      }
+    }
+    startWebcam();
+
+    const video = document.getElementById('video-fundo');
+    const textoDiv = document.getElementById('conteudo-texto');
+    const botoes = document.querySelectorAll('.item-btn');
+    const btnQuizFilme = document.getElementById('quiz-filme-btn');
+    const btnQuizReceita = document.getElementById('quiz-receita-btn');
+    const btnDesligar = document.getElementById('desligar-tv');
+
+    function desligarTV() {
+      video.pause();
+      video.classList.remove('active');
+      video.style.display = 'none';
+      textoDiv.style.display = 'none';
+      textoDiv.innerHTML = '';
+    }
+
+    function mostrarConteudo(titulo, texto, usaVideo) {
+      if (usaVideo) {
+        textoDiv.style.display = 'none';
+        textoDiv.innerHTML = '';
+        video.style.display = 'block';
+        video.classList.add('active');
+        video.currentTime = 0;
+        video.play();
+      } else {
+        video.pause();
+        video.classList.remove('active');
+        video.style.display = 'none';
+        textoDiv.style.display = 'block';
+        textoDiv.innerHTML = texto;
+      }
+    }
+
+    botoes.forEach(btn => {
+      if (btn.id !== 'quiz-filme-btn' && btn.id !== 'quiz-receita-btn') {
+        btn.addEventListener('click', () => {
+          if (btn.id === 'desligar-tv') {
+            desligarTV();
+            return;
+          }
+          const usaVideo = btn.getAttribute('data-video') === 'true';
+          mostrarConteudo(btn.getAttribute('data-titulo'), btn.getAttribute('data-texto'), usaVideo);
+        });
+      }
+    });
+
+    desligarTV();
+
+
+    const quizFilmes = [
+      {
+        pergunta: "Qual gênero você prefere?",
+        opcoes: [
+          { texto: "Ação / Catástrofe", filme: "Sharknado" },
+          { texto: "Romance / Drama", filme: "Cidade dos Anjos" },
+          { texto: "Comédia / Cultural", filme: "Tampopo" },
+          { texto: "Suspense / Mistério", filme: "Os Pecadores" }
+        ]
+      },
+      {
+        pergunta: "Qual ambiente te agrada mais?",
+        opcoes: [
+          { texto: "Cidade grande e caótica", filme: "Sharknado" },
+          { texto: "Cidades românticas e céu aberto", filme: "Cidade dos Anjos" },
+          { texto: "Pequena cidade japonesa e cultura local", filme: "Tampopo" },
+          { texto: "Cenário sombrio e intrigante", filme: "Os Pecadores" }
+        ]
+      },
+      {
+        pergunta: "Que clima você prefere no filme?",
+        opcoes: [
+          { texto: "Ação frenética e divertida", filme: "Sharknado" },
+          { texto: "Emoção e sentimentos profundos", filme: "Cidade dos Anjos" },
+          { texto: "Leveza e humor sutil", filme: "Tampopo" },
+          { texto: "Mistério e tensão", filme: "Os Pecadores" }
+        ]
+      }
+    ];
+
+  
+    const quizReceitas = [
+      {
+        pergunta: "Qual tipo de comida você está com vontade?",
+        opcoes: [
+          { texto: "Massa italiana", receita: "Macarrão à Bolonhesa" },
+          { texto: "Algo caseiro e reconfortante", receita: "Torta de Frango" },
+          { texto: "Doce para sobremesa", receita: "Bolo de Chocolate" },
+          { texto: "Algo leve e saudável", receita: "Salada Caesar" },
+          { texto: "Comida rápida e prática", receita: "Sanduíche Natural" },
+          { texto: "Algo exótico e diferente", receita: "Curry Vegano" }
+        ]
+      },
+      {
+        pergunta: "Quanto tempo você tem para cozinhar?",
+        opcoes: [
+          { texto: "30 minutos ou menos", receita: "Macarrão à Bolonhesa" },
+          { texto: "Cerca de 1 hora", receita: "Torta de Frango" },
+          { texto: "Mais de 1 hora", receita: "Bolo de Chocolate" },
+          { texto: "Quase nada, algo rápido", receita: "Sanduíche Natural" },
+          { texto: "Tempo médio (40 min)", receita: "Salada Caesar" },
+          { texto: "Tenho tempo para cozinhar", receita: "Curry Vegano" }
+        ]
+      },
+      {
+        pergunta: "Para quantas pessoas é a refeição?",
+        opcoes: [
+          { texto: "Para mim mesmo", receita: "Sanduíche Natural" },
+          { texto: "Casal ou 2 pessoas", receita: "Torta de Frango" },
+          { texto: "Família ou grupo", receita: "Bolo de Chocolate" },
+          { texto: "Acompanhamento para vários", receita: "Salada Caesar" },
+          { texto: "Convidados especiais", receita: "Macarrão à Bolonhesa" },
+          { texto: "Pessoas vegetarianas", receita: "Curry Vegano" }
+        ]
+      },
+      {
+        pergunta: "Qual o nível de dificuldade você prefere?",
+        opcoes: [
+          { texto: "Muito fácil", receita: "Sanduíche Natural" },
+          { texto: "Fácil", receita: "Salada Caesar" },
+          { texto: "Médio", receita: "Macarrão à Bolonhesa" },
+          { texto: "Um pouco difícil", receita: "Torta de Frango" },
+          { texto: "Desafiador", receita: "Bolo de Chocolate" },
+          { texto: "Chef profissional", receita: "Curry Vegano" }
+        ]
+      }
+    ];
+
+    const infoReceitas = {
+      "Macarrão à Bolonhesa": {
+        descricao: "Um clássico italiano com molho de carne suculento e macarrão al dente. Perfeito para um jantar especial!",
+        imagem: "https://img.cybercook.com.br/receitas/776/macarrao-a-bolonhesa-1.jpeg",
+        link: "https://www.tudogostoso.com.br/receita/17640-macarrao-a-bolonhesa.html"
+      },
+      "Torta de Frango": {
+        descricao: "Deliciosa torta de frango cremosa com massa crocante, perfeita para um almoço em família.",
+        imagem: "https://www.receitasnestle.com.br/sites/default/files/srh_recipes/13787a1a9f8b0f4c3a9a3ce9c7b8f3a9.jpg",
+        link: "https://www.receitasnestle.com.br/receitas/torta-de-frango-com-requeijao"
+      },
+      "Bolo de Chocolate": {
+        descricao: "Bolo fofinho de chocolate com cobertura irresistível, ideal para sobremesa ou lanche. Todo mundo ama!",
+        imagem: "https://www.receitasnestle.com.br/sites/default/files/srh_recipes/9e5a7f0c1c9f9e5a7f0c1c9f9e5a7f0c1c9f9e5a7f0c1c9f9e5a7f0c1c9f9e5a7f0c1c9f9.jpg",
+        link: "https://www.receitasnestle.com.br/receitas/bolo-de-chocolate"
+      },
+      "Salada Caesar": {
+        descricao: "Salada clássica com molho cremoso, croutons crocantes e parmesão. Leve, saborosa e nutritiva!",
+        imagem: "https://www.panelinha.com.br/imagem/salada-verde-com-molho-de-iogurte.jpg",
+        link: "https://www.panelinha.com.br/receita/salada-caesar"
+      },
+      "Sanduíche Natural": {
+        descricao: "Opção prática e saudável, perfeita para um lanche rápido. Pode ser personalizado com seus ingredientes favoritos!",
+        imagem: "https://www.sabornamesa.com.br/media/k2/items/cache/9a5b3d9c0c3f1a2a3c3b9a5b3d9c0c3f_XL.jpg",
+        link: "https://www.tudogostoso.com.br/receita/499-sanduiche-natural-de-frango.html"
+      },
+      "Curry Vegano": {
+        descricao: "Prato indiano aromático e cheio de sabores, feito com legumes e leite de coco. Uma experiência gastronômica vegetariana!",
+        imagem: "https://www.panelinha.com.br/imagem/curry-vegano-de-legumes.jpg",
+        link: "https://www.panelinha.com.br/receita/curry-vegano-de-legumes"
+      },
+      "Panquecas Americanas": {
+        descricao: "Fofinhas e douradas, perfeitas para um café da manhã especial. Sirva com mel, frutas ou maple syrup!",
+        imagem: "https://www.receiteria.com.br/wp-content/uploads/panqueca-americana-730x548.jpeg",
+        link: "https://www.tudogostoso.com.br/receita/82681-panquecas-americanas-perfeitas.html"
+      },
+      "Risoto de Cogumelos": {
+        descricao: "Cremoso e sofisticado, este risoto é perfeito para uma ocasião especial. Os cogumelos dão um sabor incrível!",
+        imagem: "https://www.panelinha.com.br/imagem/risoto-de-cogumelos.jpg",
+        link: "https://www.panelinha.com.br/receita/risoto-de-cogumelos"
+      }
+    };
+
+    let respostasSelecionadas = [];
+
+    function criarBotaoOpcao(texto, index, onClick) {
+      const btn = document.createElement('button');
+      btn.textContent = texto;
+      btn.className = 'quiz-btn';
+      btn.onclick = () => onClick(index);
+      return btn;
+    }
+
+    function mostrarPergunta(indice, quizAtual) {
+      const p = quizAtual[indice];
+      textoDiv.innerHTML = `<strong>${p.pergunta}</strong><br><br>`;
+      p.opcoes.forEach((opcao, i) => {
+        const btn = criarBotaoOpcao(opcao.texto, i, (idx) => {
+          respostasSelecionadas[indice] = p.opcoes[idx].receita || p.opcoes[idx].filme;
+          if (indice + 1 < quizAtual.length) {
+            mostrarPergunta(indice + 1, quizAtual);
+          } else {
+            mostrarResultado(quizAtual === quizReceitas);
+          }
+        });
+        textoDiv.appendChild(btn);
+      });
+    }
+
+    function mostrarResultado(ehReceita) {
+      const contagem = {};
+      respostasSelecionadas.forEach(item => {
+        contagem[item] = (contagem[item] || 0) + 1;
+      });
+      
+      let recomendado = null;
+      let max = 0;
+      for (const item in contagem) {
+        if (contagem[item] > max) {
+          max = contagem[item];
+          recomendado = item;
+        }
+      }
+      
+      if (ehReceita) {
+        const receita = infoReceitas[recomendado];
+        textoDiv.innerHTML = `
+          <div class="receita-container">
+            <strong>Receita recomendada para você:</strong><br><br>
+            <h2 class="receita-titulo">${recomendado}</h2>
+            <img src="${receita.imagem}" class="receita-img" alt="${recomendado}">
+            <p class="receita-descricao">${receita.descricao}</p>
+            <a href="${receita.link}" target="_blank" class="receita-link">
+              Ver receita completa
+            </a><br><br>
+            <button class="item-btn" id="reiniciar-quiz">Fazer quiz novamente</button>
+          </div>
+        `;
+      } else {
+        const infoFilmes = {
+          "Sharknado": "Sharknado: Uma aventura louca e divertida cheia de tubarões em tempestades.",
+          "Cidade dos Anjos": "Cidade dos Anjos: Romance emocionante entre anjos e humanos.",
+          "Tampopo": "Tampopo: Comédia cultural japonesa sobre comida e vida.",
+          "Os Pecadores": "Os Pecadores: Suspense misterioso e cheio de tensão."
+        };
+        textoDiv.innerHTML = `<strong>Filme recomendado para você:</strong><br><br>` +
+          `<em>${recomendado}</em><br>` +
+          `<p>${infoFilmes[recomendado]}</p>` +
+          `<button class="item-btn" id="reiniciar-quiz">Fazer quiz novamente</button>`;
+      }
+
+      document.getElementById('reiniciar-quiz').onclick = () => {
+        respostasSelecionadas = [];
+        if (ehReceita) {
+          mostrarPergunta(0, quizReceitas);
+        } else {
+          mostrarPergunta(0, quizFilmes);
+        }
+      }
+    }
+
+    btnQuizFilme.addEventListener('click', () => {
+      video.pause();
+      video.classList.remove('active');
+      video.style.display = 'none';
+      textoDiv.style.display = 'block';
+      respostasSelecionadas = [];
+      mostrarPergunta(0, quizFilmes);
+    });
+
+    btnQuizReceita.addEventListener('click', () => {
+      video.pause();
+      video.classList.remove('active');
+      video.style.display = 'none';
+      textoDiv.style.display = 'block';
+      respostasSelecionadas = [];
+      mostrarPergunta(0, quizReceitas);
+    });
+  </script>
+</body>
+</html>
